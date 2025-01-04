@@ -8,4 +8,4 @@ I decided to combine these two games out of love for both the new and old Wolfen
 I named the game as sumptuously as the rest of this project - Wolfenstoom. 
 
 <h2 align="center">Keyboard keys for game control</h2>
-**The game is controlled in the standard way - WASD + Mouse or Touchpad**
+<h3 align="center">The game is controlled in the standard way - WASD + Mouse or Touchpad</h3>
