@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+import logging
 from settings import *  # Настройки игры (размер экрана, FPS и т. д.)
 from map import *  # Карта игры
 from player import *  # Игрок
@@ -23,7 +24,7 @@ class Game:
         self.screen = pg.display.set_mode(RES)  # Создать окно с заданным разрешением
         pg.event.set_grab(True)  # Зафиксировать курсор внутри окна
         self.clock = pg.time.Clock()  # Контроль FPS
-        self.delta_time = 1  # Временной дельта-костыль
+        self.delta_time = 1  # Временная дельта
         self.global_trigger = False  # Флаг для глобальных событий
         self.global_event = pg.USEREVENT + 0  # Определение глобального пользовательского события
         pg.time.set_timer(self.global_event, 40)  # Таймер глобального события
@@ -43,6 +44,7 @@ class Game:
         self.sound = Sound(self)
         self.pathfinding = PathFinding(self)
         pg.mixer.music.play(-1)  # Запуск фоновой музыки (бесконечный цикл)
+        # pg.mixer.sound.play(-1)
 
     def update(self):
         """
@@ -63,9 +65,19 @@ class Game:
         """
         self.object_renderer.draw()
         self.weapon.draw()
-        # Для отладки можно включить отрисовку карты и игрока:
-        # self.map.draw()
-        # self.player.draw()
+ 
+        
+    # def Draw_minimap(self):
+    #     minimap_scale = 5  # Масштаб мини-карты
+    #     minimap_size = (RES[0] // minimap_scale, RES[1] // minimap_scale)
+    #     minimap_surface = pg.Surface(minimap_size)
+    #     minimap_surface.fill('black')  # Фон мини-карты
+    
+        # self.running = True  # Флаг для работы потоков
+        # threading.Thread(target=self._movement_thread, daemon=True).start()
+        # threading.Thread(target=self._mouse_control_thread, daemon=True).start()
+        # threading.Thread(target=self._health_recovery_thread, daemon=True).start()
+
 
     def check_events(self):
         """
@@ -79,6 +91,7 @@ class Game:
             elif event.type == self.global_event:
                 self.global_trigger = True
             self.player.single_fire_event(event)
+        
 
     def run(self):
         """
@@ -89,8 +102,12 @@ class Game:
             self.check_events()
             self.update()
             self.draw()
+            
+  
 
 
 if __name__ == '__main__':
     game = Game()
     game.run()
+
+

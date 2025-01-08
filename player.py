@@ -1,8 +1,11 @@
 from settings import *
 import pygame as pg
 import math
+import logging
 
 
+logging.basicConfig(filename='game.log', level=logging.DEBUG, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Player:
     """
@@ -13,6 +16,7 @@ class Player:
         """
         Инициализация игрока: позиция, угол обзора, здоровье и параметры управления.
         """
+        logging.debug('Player initialized with position: (%s, %s)', self.x, self.y)
         self.game = game
         self.x, self.y = PLAYER_POS
         self.angle = PLAYER_ANGLE
@@ -22,7 +26,34 @@ class Player:
         self.health_recovery_delay = 590  # Задержка восстановления здоровья
         self.time_prev = pg.time.get_ticks()
         self.diag_move_corr = 1.4 / math.sqrt(2)  # Коррекция скорости при движении по диагонали
+        
+        self.walking = False
+        self.walking_time = 0
     
+    def update(self):
+        try:
+            # ...existing code...
+            logging.debug('Player position updated to: (%s, %s)', self.x, self.y)
+        except Exception as e:
+            logging.error('Error updating player: %s', e)
+            raise
+        self.handle_movement()
+        self.apply_camera_wiggle()
+        
+        
+    def handle_movement(self):
+        # ...existing code to handle player movement...
+        self.walking = True  # Set to True when player is moving
+        
+    def apply_camera_wiggle(self):
+        if self.walking:
+            self.walking_time += 1
+            wiggle_amount = math.sin(self.walking_time * 0.1) * 5  # Adjust frequency and amplitude as needed
+            self.game.camera_offset = wiggle_amount
+        else:
+            self.walking_time = 0
+            self.game.camera_offset = 0    
+        
     def recover_health(self):
         """
         Автоматическое восстановление здоровья игрока с учетом задержки.
