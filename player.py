@@ -31,14 +31,15 @@ class Player:
         self.walking_time = 0
     
     def update(self):
+        self.handle_movement()
+        self.apply_camera_wiggle()
         try:
             # ...existing code...
             logging.debug('Player position updated to: (%s, %s)', self.x, self.y)
         except Exception as e:
             logging.error('Error updating player: %s', e)
             raise
-        self.handle_movement()
-        self.apply_camera_wiggle()
+
         
         
     def handle_movement(self):
